@@ -1,0 +1,23 @@
+.product-info-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 10px;
+  }
+  
+  .info-box {
+    text-align: center;
+  }
+  
+  .info-label {
+    font-weight: bold;
+  }
+  
+  .info-value {
+    margin-top: 5px;
+  }
+  
