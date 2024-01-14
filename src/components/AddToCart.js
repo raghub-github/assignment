@@ -1,6 +1,5 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { FaCheck } from "react-icons/fa";
 import CartAmountToggle from "./CartAmountToggle";
 import { NavLink } from "react-router-dom";
 import { Button } from "../styles/Button";
@@ -9,9 +8,8 @@ import { toast } from "react-toastify";
 
 const AddToCart = ({ product }) => {
   const { addToCart } = useCartContext();
-  const { _id, colors, stock, category, company } = product;
+  const { _id, stock, category, company } = product;
   const host = process.env.REACT_APP_HOSTNAME;
-  const [color, setColor] = useState(colors[0]);
   const [amount, setAmount] = useState(1);
   const setDecrease = () => {
     amount > 1 ? setAmount(amount - 1) : setAmount(1);
@@ -23,22 +21,6 @@ const AddToCart = ({ product }) => {
 
   return (
     <Wrapper>
-      <div className="colors">
-        <p>
-          Color:
-          {colors.map((curColor, index) => {
-            return (
-              <button
-                key={index}
-                style={{ backgroundColor: curColor }}
-                className={color === curColor ? "btnStyle active" : "btnStyle"}
-                onClick={() => setColor(curColor)}>
-                {color === curColor ? <FaCheck className="checkStyle" /> : null}
-              </button>
-            );
-          })}
-        </p>
-      </div>
 
       {/* add to cart  */}
       <CartAmountToggle
@@ -48,7 +30,7 @@ const AddToCart = ({ product }) => {
       />
 
       <NavLink to={localStorage.getItem("authToken") ? "/cart" : "/login"} onClick={() => {
-        addToCart(_id, color, amount, product, category, company);
+        addToCart(_id, amount, product, category, company);
         const editProduct = async (_id, amount) => {
           // API Call
           try {

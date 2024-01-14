@@ -1,17 +1,11 @@
 import React, { useState } from 'react';
 import { toast } from "react-toastify";
-import styled from "styled-components";
-import { useUserContext } from './context/user_context';
-import { Container } from "./styles/Container";
-import FormatPrice from "./Helpers/FormatePrice";
-import AddToCart from "./components/AddToCart";
 
 const AddProductForm = () => {
-    const { user } = useUserContext();
+    const [imageUrl, setImageUrl] = useState('');
     const [apiProduct, setApiProduct] = useState({
         name: '',
-        image: [],
-        colors: [],
+        image: '',
         price: 0,
         featured: false,
         rating: 4.3,
@@ -19,13 +13,10 @@ const AddProductForm = () => {
         description: '',
         stock: 0,
         reviews: 99,
-        company: '',
-        barcode: '',
     })
     const [productData, setProductData] = useState({
         name: '',
-        image: [],
-        colors: [],
+        image: '',
         price: 0,
         featured: false,
         rating: 4.3,
@@ -33,7 +24,6 @@ const AddProductForm = () => {
         description: '',
         stock: 0,
         reviews: 99,
-        company: '',
     });
 
     const handleInputChange = (e) => {
@@ -45,18 +35,20 @@ const AddProductForm = () => {
     };
 
     const handleImageChange = (e) => {
-        const { value } = e.target;
-        setProductData({
-            ...productData,
-            image: value.split(',').map((link) => link.trim()), // Split by commas and trim whitespace
-        });
-    };
-    const handleColorChange = (e) => {
-        const { value } = e.target;
-        setProductData({
-            ...productData,
-            colors: value.split(',').map((link) => link.trim()), // Split by commas and trim whitespace
-        });
+        const file = e.target.files[0];
+    
+        const reader = new FileReader();
+        reader.onload = () => {
+            setImageUrl(reader.result);
+            setProductData({
+                ...productData,
+                image: reader.result,
+            });
+        };
+    
+        if (file) {
+            reader.readAsDataURL(file);
+        };
     };
 
     const handleFeaturedToggle = () => {
@@ -82,8 +74,7 @@ const AddProductForm = () => {
                 // Reset the form or perform any other necessary action
                 setProductData({
                     name: '',
-                    image: [],
-                    colors: [],
+                    image: '',
                     price: 0,
                     featured: false,
                     rating: 4.3,
@@ -91,12 +82,10 @@ const AddProductForm = () => {
                     description: '',
                     stock: 0,
                     reviews: 99,
-                    company: '',
                 });
                 setApiProduct({
                     name: data.name,
                     image: data.image,
-                    colors: data.colors,
                     price: data.price,
                     featured: data.featured,
                     rating: data.rating,
@@ -104,8 +93,6 @@ const AddProductForm = () => {
                     description: data.description,
                     stock: data.stock,
                     reviews: data.reviews,
-                    company: data.company,
-                    barcode: data.barcode
                 });
             } else {
                 toast.error('Failed to add the product');
@@ -162,12 +149,9 @@ const AddProductForm = () => {
                 <div><input style={inputStyle} type="text" name="name" value={productData.name} onChange={handleInputChange} required /></div>
             </label>
             <label style={labelStyle}>
-                <h3>Images (comma-separated links):</h3>
-                <div><input style={inputStyle} type="text" name="image" value={productData.image.join(', ')} onChange={handleImageChange} required /></div>
-            </label>
-            <label style={labelStyle}>
-                <h3>Colors (comma-separated links):</h3>
-                <div><input style={inputStyle} type="text" name="colors" value={productData.colors.join(', ')} onChange={handleColorChange} /></div>
+                <h3>Images:</h3>
+                <div><input style={inputStyle} name="image" type="file" accept="image/*" onChange={handleImageChange} required />
+                </div>
             </label>
             <label style={labelStyle}>
                 <h3>Price:</h3>
@@ -191,106 +175,20 @@ const AddProductForm = () => {
                 <div><input style={inputStyle} type="number" name="reviews" value={productData.reviews} onChange={handleInputChange} /></div>
             </label>
             <label style={labelStyle}>
-                <h3>Company:</h3>
-                <div><input style={inputStyle} type="text" name="company" value={productData.company} onChange={handleInputChange} /></div>
-            </label>
-            <label style={labelStyle}>
                 <h3>Featured:
                     <input type="checkbox" style={checkboxStyle} checked={productData.featured} onChange={handleFeaturedToggle} />
                 </h3>
             </label>
             <div><button style={buttonStyle} type="submit">Add Product</button></div>
+
+            {imageUrl && (
+                <img src={imageUrl} alt="Preview" style={{ maxWidth: '300px' }} />
+            )}
         </form>
-        <hr />
-        <Wrapper>
-            return <div>
-                <Container className="container">
-                    <div className="grid ">
-                        <div className="product-data">
-                            <h2>{apiProduct.name}</h2>
-                            <p className="product-data-price product-data-real-price">
-                                Deal of the Day: <FormatPrice price={apiProduct.price} />
-                            </p>
-                            <p>{apiProduct.description}</p>
-
-                            <div className="product-data-warranty">
-                                <div className="product-warranty-data">
-                                    <img style={{ width: "100%" }} src={apiProduct.barcode} alt="barcode" />
-                                </div>
-                            </div>
-
-                            <div className="product-data-info">
-                                <p>
-                                    Available:
-                                    <span style={{ color: "green" }}> {apiProduct.stock > 0 ? "In Stock" : "Not Available"}</span>
-                                </p>
-                                <p>
-                                    Brand :<span> {apiProduct.company} </span>
-                                </p>
-                            </div>
-                            <hr />
-                            {!user.isAdmin ? ((apiProduct.stock) > 0 && <AddToCart product={apiProduct} />) : ""}
-                        </div>
-                    </div>
-                </Container>
-            </div>
-        </Wrapper>
 
     </>
     );
 };
 
-const Wrapper = styled.section`
-  .colors p {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-  }
-  .btnStyle {
-    width: 2rem;
-    height: 2rem;
-    background-color: #000;
-    border-radius: 50%;
-    margin-left: 1rem;
-    border: none;
-    outline: none;
-    opacity: 0.5;
-    cursor: pointer;
-
-    &:hover {
-      opacity: 1;
-    }
-  }
-
-  .active {
-    opacity: 1;
-  }
-
-  .checkStyle {
-    font-size: 1rem;
-    color: #fff;
-  }
-
-  /* we can use it as a global one too  */
-  .amount-toggle {
-    margin-top: 3rem;
-    margin-bottom: 1rem;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    font-size: 1.4rem;
-
-    button {
-      border: none;
-      background-color: #fff;
-      cursor: pointer;
-    }
-
-    .amount-style {
-      font-size: 2.4rem;
-      color: ${({ theme }) => theme.colors.btn};
-    }
-  }
-`;
 
 export default AddProductForm;

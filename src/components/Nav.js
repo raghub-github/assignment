@@ -209,14 +209,7 @@ const Nav = () => {
                 addproduct
               </NavLink>
             </li>
-            <li>
-              <NavLink
-                to="/report"
-                className="navbar-link "
-                onClick={() => setMenuIcon(false)}>
-                report
-              </NavLink>
-            </li></>
+            </>
           )}
 
           {/* login logout button */}

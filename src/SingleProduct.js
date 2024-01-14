@@ -52,24 +52,14 @@ const SingleProduct = () => {
                   Deal of the Day: <FormatPrice price={elm.price} />
                 </p>
                 <p>{elm.description}</p>
-
-                <div className="product-data-warranty">
-                  <div className="product-warranty-data">
-                    <img style={{width:"100%"}} src={elm.barcode} alt="barcode" />
-                  </div>
-                </div>
- 
                 <div className="product-data-info">
                   <p>
                     Available:
                     <span style={{ color: "green" }}> {elm.stock > 0 ? "In Stock" : "Not Available"}</span>
                   </p>
-                  <p>
-                    Brand :<span> {elm.company} </span>
-                  </p>
                 </div>
                 <hr />
-                {!user.isAdmin? ((elm.stock) > 0 && <AddToCart product={elm} />) :"" }
+                {!user.isAdmin ? ((elm.stock) > 0 && <AddToCart product={elm} />) : ""}
                 {/* {(elm.stock) > 0 && <AddToCart product={elm} />} */}
               </div>
             </div>

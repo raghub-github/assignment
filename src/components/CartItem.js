@@ -1,7 +1,7 @@
 import React from "react";
 import FormatPrice from "../Helpers/FormatePrice";
 
-const CartItem = ({ _id, name, color, image, price, amount }) => {
+const CartItem = ({ _id, name, image, price, amount }) => {
   return (
     <div className="cart_heading grid grid-four-column">
       <div className="cart-image--name">
@@ -12,12 +12,6 @@ const CartItem = ({ _id, name, color, image, price, amount }) => {
         </div>
         <div>
           <p>{name}</p>
-          <div className="color-div">
-            <p>color:</p>
-            <div
-              className="color-style"
-              style={{ backgroundColor: color, color: color }}></div>
-          </div>
         </div>
       </div>
       {/* price   */}

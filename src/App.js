@@ -12,7 +12,6 @@ import Footer from "./components/Footer";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import AddProductForm from "./AddProduct";
-import Report from "./Report";
 
 const App = () => {
   const theme = {
@@ -49,7 +48,6 @@ const App = () => {
           <Route exact path="/" element={<Products />} />
           <Route exact path="/singleproduct/:_id" element={<SingleProduct />} />
           <Route exact path="/addproduct" element={<AddProductForm />} />
-          <Route exact path="/report" element={<Report />} />
           <Route
             exact
             path="/login"

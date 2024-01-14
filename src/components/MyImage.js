@@ -1,28 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 
-const MyImage = ({ imgs = [] }) => {
-  const [mainImage, setMainImage] = useState(imgs[0]);
+const MyImage = ({ imgs }) => {
   return (
-    <Wrapper> 
-      <div className="grid grid-four-column">
-        {imgs.map((curElm, index) => { 
-          return (
-            <figure key={index}>
-              <img
-                src={curElm}
-                alt={curElm.name}
-                className="box-image--style"
-                onClick={() => setMainImage(curElm)}
-              />
-            </figure>
-          );
-        })}
-      </div>
-      {/* 2nd column  */}
-
-      <div className="main-screen">
-        <img src={mainImage} alt={mainImage.name} />
+    <Wrapper>
+      <div >
+        <img src={imgs} alt={imgs.name} width={"500px"} height={"400px"} />
       </div>
     </Wrapper>
   );
