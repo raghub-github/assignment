@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 
 const AddToCart = ({ product }) => {
   const { addToCart } = useCartContext();
-  const { _id, stock, category, company } = product;
+  const { _id, stock, category } = product;
   const host = process.env.REACT_APP_HOSTNAME;
   const [amount, setAmount] = useState(1);
   const setDecrease = () => {
@@ -30,7 +30,7 @@ const AddToCart = ({ product }) => {
       />
 
       <NavLink to={localStorage.getItem("authToken") ? "/cart" : "/login"} onClick={() => {
-        addToCart(_id, amount, product, category, company);
+        addToCart(_id, amount, product, category);
         const editProduct = async (_id, amount) => {
           // API Call
           try {
@@ -42,9 +42,9 @@ const AddToCart = ({ product }) => {
               },
               body: JSON.stringify({ amount }),
             });
-            const json = await response.json();
+            await response.json();
             if (response.ok) {
-              // toast.success("Item updated successfully");
+              toast.success("Item updated successfully");
             } else {
               console.error("Failed to update product data on the server");
             }
